@@ -70,5 +70,8 @@ def upload_document(request, document_name, file):
             name=document_name,
         )
         document.link.add(link)
-
-    return JsonResponse({'success': True})
+    data = {
+        'success': True,
+        'message': 'Your document had been successfully uploaded and analyzed.'
+    }
+    return JsonResponse(data)

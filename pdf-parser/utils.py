@@ -1,8 +1,9 @@
+import re
+import json
 from StringIO import StringIO
 
-import re
+from django.http import HttpResponse
 
-from django.http import HttpResponseBadRequest
 from pdfminer.converter import TextConverter
 from pdfminer.layout import LAParams
 from pdfminer.pdfinterp import PDFResourceManager, PDFPageInterpreter
@@ -36,14 +37,21 @@ def get_urls_from_text(text):
 
 def require_pdf_file(view_func):
     def _wrapped_view_func(request, *args, **kwargs):
-        bad_request = HttpResponseBadRequest('Bad request, please provide pdf file.')
         if not request.FILES or len(request.FILES.items()) > 1:
-            return bad_request
+            return json_response_bad_request({'message': 'Bad request, please provide .PDF file.'})
         document_name, file = request.FILES.items()[0]
-        # for document_name, file in request.FILES.iteritems():
         if not file.content_type == 'application/pdf':
-            return bad_request
+            return json_response_bad_request({'message': 'Bad request, please provide .PDF file.'})
 
         return view_func(request, document_name, file, *args, **kwargs)
 
     return _wrapped_view_func
+
+
+def json_response_bad_request(vars):
+    msg = {
+        'status_code': 400,
+        'content_type': 'application/json',
+    }
+    msg.update(vars)
+    return HttpResponse(json.dumps(msg), status=400, content_type='applecation/json')

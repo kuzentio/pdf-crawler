@@ -60,9 +60,15 @@ class TestUploadView(TestCase):
         with open(filename) as file:
             response = self.client.post(
                 reverse("parser:upload_document"),
-                data={'name': 'Igors_CV', 'attachment': file}
+                data={'doc': file}
             )
-            links = Link.objects.all()
+            links = Link.objects.all().values_list('url', flat=True)
+            document = Document.objects.get(name='doc')
+            document_links = document.link.all().values_list('url', flat=True)
+
             self.assertEqual(response.status_code, 200)
             self.assertEqual(response.json().get('success'), True)
             self.assertEqual(links.count(), len(urls_from_file))
+            self.assertTrue(
+                set(links) & set(document_links) == set(urls_from_file)
+            )

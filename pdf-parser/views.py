@@ -28,7 +28,7 @@ def get_document(request, document_id):
         Document, pk=document_id
     )
     urls = Link.objects.filter(
-        document=document
+        documents=document
     ).values(
         'url'
     )

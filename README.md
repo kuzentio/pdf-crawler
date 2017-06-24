@@ -33,3 +33,11 @@ GET: /documents/<document_id> - endpoint returns a set of URLs for a specific do
 GET: /documents/links/ - endpoint returns a set of all URLs found, including the number of documents that contained the URL.
 ```
 
+## Samples
+
+You can use any kind of PDF documents for testing, but I want provide you example:
+```
+https://www.dropbox.com/s/ob6wlyp60hc763t/Igor_Kuzmenko_cv_.pdf?dl=0
+```
+
+

@@ -18,5 +18,5 @@ from django.contrib import admin
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^documents/', include('pdf-parser.urls', namespace='pdf-parser')),
+    url(r'^documents/', include('parser.urls', namespace='parser')),
 ]

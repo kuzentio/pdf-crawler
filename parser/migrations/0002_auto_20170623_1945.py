@@ -8,7 +8,7 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('pdf-parser', '0001_initial'),
+        ('parser', '0001_initial'),
     ]
 
     operations = [
@@ -19,6 +19,6 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='document',
             name='link',
-            field=models.ManyToManyField(to='pdf-parser.Link'),
+            field=models.ManyToManyField(to='parser.Link'),
         ),
     ]

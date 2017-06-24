@@ -11,7 +11,7 @@ urlpatterns = [
     url(
         regex=r'^(?P<document_id>\d+)/$',
         view=views.get_document,
-        name='documents'
+        name='document'
     ),
     url(
         regex=r'^links/$',

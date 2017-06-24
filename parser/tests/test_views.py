@@ -1,3 +1,5 @@
+import os
+
 from django.test import Client
 from unittest import TestCase
 
@@ -42,4 +44,22 @@ class TestViews(TestCase):
 
         self.assertEqual(response.status_code, 200)
         for url in document_urls:
-            self.assertTrue(url in urls_from_db)
+            self.assertTrue(url.get('url') in urls_from_db)
+
+    def test_uploading_and_processing_file(self):
+        file_dir = os.path.dirname(os.path.realpath('__file__'))
+        filename = os.path.join(file_dir, 'parser/tests/files/Igor_Kuzmenko_cv_.pdf')
+        urls_from_file = [
+            'http://google.com/', 'http://linkedin.com/', 'https://www.unisportstore.com/',
+            'http://nashaversiya.com/', 'http://brainmedia.com.ua/'
+        ]
+        with open(filename) as file:
+            response = self.client.post(
+                reverse("parser:upload_document"),
+                data={'name': 'Igors_CV', 'attachment': file}
+            )
+            links = Link.objects.all()
+
+            self.assertEqual(response.status_code, 200)
+            self.assertEqual(response.json().get('success'), True)
+            self.assertEqual(links.count(), len(urls_from_file))
